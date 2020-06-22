@@ -7,43 +7,43 @@
 
 import React from "react"
 import PropTypes from "prop-types"
-import { StaticQuery, graphql } from "gatsby"
+// Quitamos estos 2 componentes propios de gatsby, ya que no los usaremos por el momento
+// import { StaticQuery, graphql } from "gatsby"
+// Importamos un par de Styled-components
+import { Content, Footer } from '../styles/components'
+import './layout.css'
 
 import Header from "./header"
 
 const Layout = ({ children }) => (
-  <StaticQuery
-    query={graphql`
-      query SiteTitleQuery {
-        site {
-          siteMetadata {
-            title
-          }
-        }
-      }
-    `}
-    render={data => (
-      <>
-        <Header siteTitle={data.site.siteMetadata.title} />
-        <div
-          style={{
-            margin: `0 auto`,
-            maxWidth: 960,
-            padding: `0px 1.0875rem 1.45rem`,
-            paddingTop: 0,
-          }}
-        >
-          <main>{children}</main>
-          <footer>
-            © {new Date().getFullYear()}, Built with
-            {` `}
-            <a href="https://www.gatsbyjs.org">Gatsby</a>
-          </footer>
-        </div>
-      </>
-    )}
-  />
+  /* Esto no lo usaremos por el momento, por lo cual, lo comentamos o eliminamos */
+  // <StaticQuery
+  //   query={graphql`
+  //     query SiteTitleQuery {
+  //       site {
+  //         siteMetadata {
+  //           title
+  //         }
+  //       }
+  //     }
+  //   `}
+  //   render={data => (
+  <>
+    <Header />
+    {/* Modificamos el div por un styled component */}
+    <Content>
+      <main>{children}</main>
+      {/* El Footer será nuestro componente pre definido*/}
+      <Footer>
+        con ♥ por
+        <a href="https://www.platzi.com">Platzi</a>
+      </Footer>
+    </Content>
+  </>
 )
+// }
+// />
+// )
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,

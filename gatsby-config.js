@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `Platzi-E-Commerce`,
+    title: `Platzi Swag`,
     description: `La mejor merch de Platzi disponible para ti`,
     author: `@stevecode21`,
   },
