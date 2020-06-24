@@ -8,7 +8,7 @@ export default function cancelation() {
       <SEO title="Cancelar compra" />
       <Purchase>
         <h2>Compra cancelada</h2>
-        <span rol="img" aria-label="emoji">😥</span>
+        <span role="img" aria-label="emoji">😥</span>
         <p>Es una pena que hayas cancelado tu pedido</p>
         <p>Recuerda que puedes hacer uno nuevo pedido cuando desees, ¡aquí estamos para ti!</p>
         <Link to="/">

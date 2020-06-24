@@ -16,7 +16,7 @@ export default function thanks() {
         <p>Disfruta tu swag, lucelo con orgullo</p>
         <p>Te esperamos de vuelta y recuerda: ¡nunca pares de aprender!</p>
         {/* Agrego un span tipo emoji para mostrar un emoji a mi usuario */}
-        <span rol="img" aria-label="emoji">💚</span>
+        <span role="img" aria-label="emoji">💚</span>
         {/* Aquí envuelvo un Button con mi componente Link */}
         <Link to="/">
           <Button>Volver al catálogo</Button>
