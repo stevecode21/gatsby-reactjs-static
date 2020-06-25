@@ -17,12 +17,15 @@ export const above = Object.keys(size).reduce((acc, label) => {
 }, {})
 
 export const GlobalStyles = createGlobalStyle`
+/* Este es el contenedor de toda la app que genera gatsby  */
   .___gatsby{
     position: absolute;
   }
+  /* Accedemos al componente main */
   main{
     padding-top: 3.5rem;
   }
+  /* Aqui están los media queries */
   ${above.medium`
    main{
       padding-top: calc(3.5rem - 100vh);

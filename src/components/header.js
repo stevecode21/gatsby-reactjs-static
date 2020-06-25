@@ -4,7 +4,7 @@ import React from "react"
 // Traigo estos styled components
 import { MenuItem, StyledHeader } from '../styles/components'
 
-const Header = ({ siteTitle }) => (
+const Header = () => (
   // Asignamos el StyledHeader que será nuestro header
   <StyledHeader>
     {/* Usamos un Link para que cuando sea seleccionado nuestro logo, se direccione al home */}
@@ -39,19 +39,6 @@ const Header = ({ siteTitle }) => (
         </MenuItem>
       </ul>
     </nav>
-    <div>
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: `white`,
-            textDecoration: `none`,
-          }}
-        >
-          {siteTitle}
-        </Link>
-      </h1>
-    </div>
   </StyledHeader>
 )
 
