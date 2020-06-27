@@ -1,13 +1,12 @@
 import React from "react"
 import { graphql } from "gatsby"
-import { Jumbo } from '../components'
-import { SEO } from "../components"
-// Importo la librería de styled components
-import styled from 'styled-components'
+// Importo mis componentes de una forma mas optimizada, adicionalmente importando Products
+import { Jumbo, SEO, Products } from '../components'
+
 
 
 export const query = graphql`
-  query GET_DESCRIPTION {
+  query GET_DATA {
     allSite {
       edges {
         node {
@@ -18,31 +17,43 @@ export const query = graphql`
         }
       }
     }
-  }
+    # Añado el query que generamos con los productos
+
+      # Ya tenemos acceso a la información de los precios de mis productos de stripe
+    allStripePrice {
+      edges {
+        node {
+          id
+          unit_amount
+          product {
+            name
+            metadata {
+              description
+              img
+              wear
+              }
+            }
+          }
+        }
+      }
+    }
 `
 
-// Aquí declaro mis estilos para un botón
-const Button = styled.button`
-  /* Este componente será una copia del botón */
-  width: 8rem;
-  background-color: #98CA3F;
-  border: none;
-  border-radius: 10px;
-    /*Aquí puedo acceder a los props para dar estilos dinamicos, los styled-components me devuelven un callback donde yo tengo acceso a los props  */
-  color: ${props => props.color};
-  /* Puedo usar un selector para estilar  */
-  &: hover {
-    transform: scale(1.4);
-  }
 
-`
-const IndexPage = ({ data }) => (
-  <>
-    <SEO title="Home" />
-    {/* eslint-disable-next-line react/prop-types */}
-    <Jumbo description={data.allSite.edges[0].node.siteMetadata.description} />
-  </>
-)
+const IndexPage = ({ data }) => {
+  console.log(data);
+
+  return (
+    <>
+      <SEO title="Home" />
+      {/* eslint-disable-next-line react/prop-types */}
+      <Jumbo description={data.allSite.edges[0].node.siteMetadata.description} />
+      {/* Agrego nuestro nuevo componente enviandole un prop con la lista de nuestro productos del query */}
+      {/* eslint-disable-next-line react/prop-types */}
+      <Products products={data.allStripePrice.edges} />
+    </>
+  )
+}
 
 
 export default IndexPage

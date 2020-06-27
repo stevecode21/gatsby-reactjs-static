@@ -11,3 +11,5 @@ export { default as Image } from "./image"
   export { X };
 */
 export { default as Jumbo } from "./Jumbo"
+// Exporto mi componente Products
+export { default as Products } from './Products'
