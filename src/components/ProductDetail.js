@@ -1,13 +1,24 @@
-import React, { useState } from 'react'
+// Importamos el hook useContext para hacer uso del contexto
+import React, { useState, useContext } from 'react'
+// Impirtamos cart Cotnext de nuestro contexto creado
+import { CartContext } from '../context'
 import priceFormat from '../utils/priceFormat'
 import { Tag, SizeButton, QtyButton, SizeSelect, Button, StyledProductDetail, QtySelect } from '../styles/components'
-// Importo mi componente Stars
 import { SEO, Stars } from './'
 
 export default function ProductDetail({ unit_amount, sku: id, product: { name, metadata } }) {
   const formatePrice = priceFormat(unit_amount)
   const [size, setSize] = useState(2)
   const [qty, setQty] = useState(1)
+  // Hacemos destructuring obteniendo el método addToCart
+  const { addToCart } = useContext(CartContext)
+
+  // Definimos un método que nos ayude a agregar elementos al carrito
+  const handleSubmit = () => {
+    // Aquí llamamos nuestro método addToCart y le enviamos lo que debe añadir
+    addToCart({ unit_amount, sku: id, name, metadata, quantity: qty })
+  }
+
   return (
     <StyledProductDetail>
       <SEO title={name} />
@@ -17,11 +28,8 @@ export default function ProductDetail({ unit_amount, sku: id, product: { name, m
         <Tag>Popular</Tag>
         <h2>{name}</h2>
         <b>USD {formatePrice}</b>
-        {/* Colocamos el componente para las estrellas y el color de la prenda */}
         <Stars />
-        {/* Uso el prop wear, ya que si es una prenda, es necesario mostrar el color de la prenda */}
         {metadata.wear && <h3>{metadata.color}</h3>}
-        {/* Añadimos una etiqueta small donde mostramos la descripción del producto*/}
         <small>{metadata.description}</small>
         {/* eslint-disable-next-line react/prop-types */}
         {metadata.wear && (
@@ -38,8 +46,8 @@ export default function ProductDetail({ unit_amount, sku: id, product: { name, m
           <input type="text" disabled value={qty} />
           <button onClick={() => setQty(qty + 1)}>+</button>
         </QtySelect>
-        {/* Agregamos nuetro botón estilado */}
-        <Button>Agregar al carrito</Button>
+        {/* Añadimos un evento onClick para agregar al carrito el producto */}
+        <Button onClick={handleSubmit}>Agregar al carrito</Button>
       </div>
     </StyledProductDetail>
   )

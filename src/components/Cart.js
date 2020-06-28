@@ -1,21 +1,31 @@
-// Traemos nuestro hook useContext para usar mi contexto
-import React, { useContext } from 'react'
+// Vamos a usar el hook de useEffect y de useState
+import React, { useContext, useEffect, useState } from 'react'
 // Importamos Link desde gatsby
 import { Link } from 'gatsby'
-// Importamos algunos componentes estilados
 import { Button, StyledCart } from '../styles/components'
-// Importamos también nuestra herramienta de formateo de precios
 import priceFormat from '../utils/priceFormat'
 // Importo el contexto
 import { CartContext } from '../context'
+
+
 export default function cart() {
-  // Lo que necesitamos de nuestro contexto es traer a cart 
   const { cart } = useContext(CartContext)
+  // Definimos un estado para nuestro total de productos
+  const [total, setTotal] = useState(0)
+
+  const getTotal = () => {
+    setTotal(cart.reduce((acc, current) => acc + current.unit_amount * current.quantity, 0))
+  }
+
+  // Creamos el useEffect para que cuando nuestro componente se renderice, se haga el cálculo de nuestro total
+  useEffect(() => {
+    // Ejecutamos nuestro método para calcular el total
+    getTotal()
+  }, [])
+
   return (
-    // Retornamos nuestro código envuelto en el styled-component
     <StyledCart>
       <h2>Carrito de compras</h2>
-      {/* Creamos una tabla para mostrar la información de las compras */}
       <table>
         <tbody>
           <tr>
@@ -31,11 +41,11 @@ export default function cart() {
               {/* Colocamos la imagen y el nombre de swag */}
               <td><img src={swag.metadata.img} alt={swag.name} /> {swag.name}</td>
               {/* mostramos nuestro precio formateado */}
-              <td>USD {priceFormat(swag.price)}</td>
+              <td>USD {priceFormat(swag.unit_amount)}</td>
               {/* Ponemos la cantidad */}
               <td>{swag.quantity}</td>
               {/* Aquí colocaremos el precio total del elemento en función de la cantidad */}
-              <td>{priceFormat(swag.quantity * swag.price)}</td>
+              <td>{priceFormat(swag.quantity * swag.unit_amount)}</td>
             </tr>
           ))}
         </tbody>
@@ -43,7 +53,8 @@ export default function cart() {
       <nav>
         <div>
           <h3>Subtotal: </h3>
-          <small>Total</small>
+          {/* Agregamos el total del precio formateado respectivamente */}
+          <small>USD {priceFormat(total)}</small>
         </div>
         <div>
           {/* Redirigimos con un Link hacia el home */}

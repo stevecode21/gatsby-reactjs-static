@@ -16,18 +16,6 @@ import { Content, Footer } from '../styles/components'
 import Header from "./header"
 
 const Layout = ({ children }) => (
-  /* Esto no lo usaremos por el momento, por lo cual, lo comentamos o eliminamos */
-  // <StaticQuery
-  //   query={graphql`
-  //     query SiteTitleQuery {
-  //       site {
-  //         siteMetadata {
-  //           title
-  //         }
-  //       }
-  //     }
-  //   `}
-  //   render={data => (
   <>
     <Header />
     {/* Modificamos el div por un styled component */}

@@ -44,7 +44,7 @@ module.exports = {
       // options buscará nuestra configuración de typography desde el archivo creado en utils
       options: {
         // Esta propiedad debe apuntar hacia la ruta de nuestra configuración
-        pathToConfigModule: "src/utils/typography.js"
+        pathToConfigModule: `src/utils/typography`
       }
     },
     //El segundo plugin de stripe si requiere una pequeña configuración:
@@ -64,7 +64,7 @@ module.exports = {
       resolve: `@hot-loader/react-dom`,
       options: {
         alias: {
-          'react-dom': '@hot-loader/react-dom'
+          'react-dom': `@hot-loader/react-dom`
         }
       }
     }
