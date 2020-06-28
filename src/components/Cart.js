@@ -1,28 +1,53 @@
-// Vamos a usar el hook de useEffect y de useState
 import React, { useContext, useEffect, useState } from 'react'
-// Importamos Link desde gatsby
 import { Link } from 'gatsby'
 import { Button, StyledCart } from '../styles/components'
 import priceFormat from '../utils/priceFormat'
-// Importo el contexto
 import { CartContext } from '../context'
 
 
 export default function cart() {
   const { cart } = useContext(CartContext)
-  // Definimos un estado para nuestro total de productos
   const [total, setTotal] = useState(0)
+  // Creamos un nuevo estado para llevar a cabo el pago con Stripe
+  const [stripe, setStripe] = useState()
 
   const getTotal = () => {
     setTotal(cart.reduce((acc, current) => acc + current.unit_amount * current.quantity, 0))
   }
 
-  // Creamos el useEffect para que cuando nuestro componente se renderice, se haga el cálculo de nuestro total
   useEffect(() => {
-    // Ejecutamos nuestro método para calcular el total
+    // En nuestro useEffect usaremos la ejecución de nuestro setStripe, para poder acceder una vez que el componente está cargado, a la ventana de pago de stripe
+    setStripe(
+      // Aquí le enviamos a nuestro state la ventana de pago de Stripe usando nuestra PublicKey previamente configurada
+      window.Stripe(process.env.STRIPE_PK)
+    )
     getTotal()
   }, [])
 
+  // Queremos que nuestro botón "Ir al pago", tenga la capacidad de poder enviarnos a la ventana de pago de Stripe, por lo cual creamos este método, el cual será asíncrono y toma un evento (el de onClick)
+  const handleSubmit = async e => {
+    // Prevenimos las cargar al pasar el evento
+    e.preventDefault()
+
+    // Destructuramos un error si es que existe de la llamada de Stripe, esperamos que Stripe en su método redirectToCheckout nos devuelva o no lo que necesitamos
+    const { error } = await stripe.redirectToCheckout({
+      // redirectToCheckout necesita una configuración con los items que vamos a comprar
+      // En este caso mapeamos cart y obtenemos el sku y la cantidad y devolvemos estos elementos al mapeo
+      lineItems: cart.map(({ sku, quantity }) => ({ price: sku, quantity })),
+      // Agregamos el modo tipo payment
+      mode: "payment",
+      // También requerimos el redireccionamiento en caso de que sea exitosa la compra
+      successUrl: process.env.SUCCESS_REDIRECT,
+      // También requerimos el redireccionamiento en caso de que sea cancelada la compra
+      cancelUrl: process.env.CANCEL_REDIRECT
+    })
+
+    // Si existe algún tipo de error
+    if (error) {
+      // Ejecutamos el error
+      throw error
+    }
+  }
   return (
     <StyledCart>
       <h2>Carrito de compras</h2>
@@ -34,17 +59,11 @@ export default function cart() {
             <th>Cantidad</th>
             <th>Total</th>
           </tr>
-          {/* Mapeamos nuestro state cart y tomará swag como cada una de las piezas a comprar */}
           {cart.map(swag => (
-            // Creamos un table row por cada elemento, le agregamos un key que será igual al swag
             <tr key={swag.id}>
-              {/* Colocamos la imagen y el nombre de swag */}
               <td><img src={swag.metadata.img} alt={swag.name} /> {swag.name}</td>
-              {/* mostramos nuestro precio formateado */}
               <td>USD {priceFormat(swag.unit_amount)}</td>
-              {/* Ponemos la cantidad */}
               <td>{swag.quantity}</td>
-              {/* Aquí colocaremos el precio total del elemento en función de la cantidad */}
               <td>{priceFormat(swag.quantity * swag.unit_amount)}</td>
             </tr>
           ))}
@@ -53,16 +72,15 @@ export default function cart() {
       <nav>
         <div>
           <h3>Subtotal: </h3>
-          {/* Agregamos el total del precio formateado respectivamente */}
           <small>USD {priceFormat(total)}</small>
         </div>
         <div>
-          {/* Redirigimos con un Link hacia el home */}
           <Link to='/'>
-            {/* Agregamos nuestro botón estilado */}
             <Button type="outline">Volver</Button>
           </Link>
-          <Button>Ir al pago</Button>
+          {/* Agregamos el evento onClick para la ejecución del método que lleva a la ventana de Stripe */}
+          {/* Adicionalmente y muy importante, es que debemos hacer la validación para que la gente no compre si el carrito está vacio */}
+          <Button onClick={handleSubmit} disabled={cart.length === 0}>Ir al pago</Button>
         </div>
       </nav>
     </StyledCart>

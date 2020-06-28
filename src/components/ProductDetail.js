@@ -6,7 +6,7 @@ import priceFormat from '../utils/priceFormat'
 import { Tag, SizeButton, QtyButton, SizeSelect, Button, StyledProductDetail, QtySelect } from '../styles/components'
 import { SEO, Stars } from './'
 
-export default function ProductDetail({ unit_amount, sku: id, product: { name, metadata } }) {
+export default function ProductDetail({ unit_amount, id, product: { name, metadata } }) {
   const formatePrice = priceFormat(unit_amount)
   const [size, setSize] = useState(2)
   const [qty, setQty] = useState(1)
