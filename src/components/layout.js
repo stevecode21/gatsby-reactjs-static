@@ -11,7 +11,7 @@ import PropTypes from "prop-types"
 // import { StaticQuery, graphql } from "gatsby"
 // Importamos un par de Styled-components
 import { Content, Footer } from '../styles/components'
-import './layout.css'
+// import './layout.css'
 
 import Header from "./header"
 
