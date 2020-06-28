@@ -1,15 +1,14 @@
 const React = require("react")
 const Layout = require("./src/components/layout").default
-// Importo mis estilos globales
 const { GlobalStyles } = require('./src/styles')
-
+// Importamos nuestro cart provider (nuestro componente proveedor) desde nuestro context
+const { CartProvider } = require('./src/context')
 
 // eslint-disable-next-line react/display-name
 exports.wrapRootElement = ({ element }) => (
-  // Usaré un fragment
-  <>
-    {/* Aquí llamo al componente que tiene los etilos globales */}
+  // Envolvemos nuestra aplicación nen nuestro cartProvider
+  <CartProvider>
     < GlobalStyles />
     <Layout>{element}</Layout>
-  </>
+  </CartProvider>
 )
