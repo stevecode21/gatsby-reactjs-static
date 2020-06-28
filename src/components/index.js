@@ -12,5 +12,6 @@ export { default as Image } from "./image"
 */
 export { default as Jumbo } from "./Jumbo"
 export { default as Products } from './Products'
-// Exporto e importo mi componente ProductDetail
 export { default as ProductDetail } from './ProductDetail'
+// Importo mi componente stars
+export { default as Stars } from './Stars'
